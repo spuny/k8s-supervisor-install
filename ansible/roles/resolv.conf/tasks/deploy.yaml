@@ -1,0 +1,28 @@
+---
+- hosts: all
+  tasks:
+          - name: deploy resolv.conf template
+            template:
+                    src: /home/ubuntu/backup/ansible/roles/resolv.conf/templates/resolv.conf
+                    dest: /etc/resolv.conf
+                    owner: root
+                    group: root
+                    mode: 0644
+                    backup: yes
+
+          - name: Change hosts file
+            lineinfile:
+                    dest: /etc/hosts
+                    regexp: '^127\.0\.0\.1[ \t]+localhost'
+                    line: '127.0.0.1 localhost {{ inventory_hostname }}'
+                    state: present
+                    #          - name: Edit kubelet env
+                    #            lineinfile:
+                    #                    path: /etc/kubernetes/kubelet.env
+                    #                    line: --cluster-dns=10.233.0.3 \
+                    #                    insertafter: KUBELET_ARGS=\"
+                    #           
+                    #          - name: Restart kubelet
+                    #            service:
+                    #                    name: kubelet
+                    #                    state: restarted 

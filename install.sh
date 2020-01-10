@@ -15,9 +15,13 @@ ssh $master_node git clone https://github.com/openstack/openstack-helm.git
 ssh $master_node git clone https://github.com/openstack/openstack-helm-infra.git
 ssh $master_node git clone https://github.com/lmercl/armada-manifests.git
 
+cd ~
 git clone https://github.com/kubernetes-sigs/kubespray.git
 cd $HOME/kubespray
+chown ubuntu.ubuntu $HOME/kubespray -R
+sudo apt install python-pip -y
 sudo pip install -r requirements.txt
+chown ubuntu.ubuntu $HOME/kubespray -R
 
 cp -rfp inventory/sample inventory/mycluster
 echo "Create HOSTS file for ansible"

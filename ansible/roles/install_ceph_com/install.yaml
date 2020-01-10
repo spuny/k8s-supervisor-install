@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+          - name: Install package ceph-common
+            package:
+                    name: ceph-common
+                    state: present
+
