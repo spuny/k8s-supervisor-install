@@ -1,10 +1,9 @@
 #!/bin/bash
 master_node="192.168.210.11"
 
-if [ "$USER" == "root" ];
-then
-        echo "Must run as root or with sudo"
-        exit 1
+if [[ $EUID -ne 0 ]]; then
+   echo "You must be root to do this." 1>&2
+   exit 100
 fi
 
 # create correct dns resolvers
