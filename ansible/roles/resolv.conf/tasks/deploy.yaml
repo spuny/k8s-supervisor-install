@@ -3,7 +3,7 @@
   tasks:
           - name: deploy resolv.conf template
             template:
-                    src: /home/ubuntu/ansible/roles/resolv.conf/templates/resolv.conf
+                    src: ~/k8s-supervisor-install/ansible/roles/resolv.conf/templates/resolv.conf
                     dest: /etc/resolv.conf
                     owner: root
                     group: root

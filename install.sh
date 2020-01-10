@@ -10,6 +10,14 @@ fi
 rm /etc/resolv.conf
 echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf
 
+# Install zsh etc
+sudo apt install git zsh -y
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sed -i 's/plugins\=\(git\)/plugins\=\(git kubectl\)/g' ~/.zshrc
+echo "export PROMPT='%(!.%{%F{yellow}%}.)$USER@%{$fg[white]%}%M ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'" >> ~/.zshrc
+source ~/.zshrc
+
+
 # clone requested repositories
 ssh $master_node git clone https://github.com/openstack/openstack-helm.git
 ssh $master_node git clone https://github.com/openstack/openstack-helm-infra.git
