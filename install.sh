@@ -1,21 +1,16 @@
 #!/bin/bash
 master_node="192.168.210.11"
 
-if [[ $EUID -ne 0 ]]; then
-   echo "You must be root to do this." 1>&2
-   exit 100
-fi
-
 # create correct dns resolvers
-rm /etc/resolv.conf
-echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf
+sudo rm /etc/resolv.conf
+sudo echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf
 
 # Install zsh etc
 sudo apt install git zsh -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 sed -i 's/plugins\=\(git\)/plugins\=\(git kubectl\)/g' ~/.zshrc
 echo "export PROMPT='%(!.%{%F{yellow}%}.)$USER@%{$fg[white]%}%M ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'" >> ~/.zshrc
-source ~/.zshrc
 
 
 # clone requested repositories
@@ -27,6 +22,7 @@ cd ~
 git clone https://github.com/kubernetes-sigs/kubespray.git
 cd $HOME/kubespray
 chown ubuntu.ubuntu $HOME/kubespray -R
+sudo apt update
 sudo apt install python-pip -y
 sudo pip install -r requirements.txt
 chown ubuntu.ubuntu $HOME/kubespray -R
