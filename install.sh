@@ -30,12 +30,30 @@ chown ubuntu.ubuntu $HOME/kubespray -R
 sudo apt install python-pip -y
 sudo pip install -r requirements.txt
 chown ubuntu.ubuntu $HOME/kubespray -R
-
 cp -rfp inventory/sample inventory/mycluster
+
+# Install Helm
+cd /tmp
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > install-helm.sh
+chmod u+x install-helm.sh
+./install-helm.sh
+
+# Install Tiller - in version of helm 3 tiller is no longer supported !!!
+# Armada will not work thou
+
+kubectl -n kube-system create serviceaccount tiller
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+# Verification of runnig tiller pod
+kubectl get pods -n kube-system |grep tiller
+
 echo "Create HOSTS file for ansible"
 echo "Check group_vars!!!!!"
 echo "Run ansible like ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml"
 
+ssh $master_node echo "alias armada='sudo docker exec -t armada armada'"
+ssh $master_node mkdir ~/.kube
+ssh $master_node sudo cp /etc/kubernetes/admin.conf ~/.kube/config
 
 # run armada
-# docker run -d --rm --net host  --name armada -v /etc/:/etc/ -v /home/ubuntu/kube/:/home/ubuntu/.kube/ -v /home/ubuntu/armada/:/tmp/ quay.io/airshipit/armada:latest
+ssh $master_node sudo docker run -d --rm --net host  --name armada -v /etc/:/etc/ -v /home/ubuntu/.kube/:/home/ubuntu/.kube/ -v /home/ubuntu/:/tmp/ quay.io/airshipit/armada:latest
+

@@ -6,3 +6,10 @@
                     name: ceph-common
                     state: present
 
+          - name: Install another usefull packages
+            apt:
+                pkg:
+                    - iotop
+                    - htop
+                    - nmap
+
