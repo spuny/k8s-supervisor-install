@@ -6,11 +6,11 @@ sudo rm /etc/resolv.conf
 sudo echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf
 
 # Install zsh etc
-sudo apt install git zsh -y
+sudo apt install git zsh curl wget -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 sed -i 's/plugins\=\(git\)/plugins\=\(git kubectl\)/g' ~/.zshrc
-echo "export PROMPT='%(!.%{%F{yellow}%}.)$USER@%{$fg[white]%}%M ${ret_status} %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'" >> ~/.zshrc
+echo -e "PROMPT='%(!.%{%F{yellow}%}.)\$USER@%{\$fg[white]%}%M \${ret_status} %{\$fg[cyan]%}%c%{$reset_color%} \$(git_prompt_info)'" >> ~/.zshrc
 
 
 # clone requested repositories
@@ -39,6 +39,7 @@ chmod u+x install-helm.sh
 
 kubectl -n kube-system create serviceaccount tiller
 kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+helm init --service-account tiller
 # Verification of runnig tiller pod
 kubectl get pods -n kube-system |grep tiller
 
