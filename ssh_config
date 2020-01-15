@@ -1,0 +1,6 @@
+Host *
+        IdentityFile ~/.ssh/id_rsa
+        User ubuntu
+        StrictHostKeyChecking no
+        UserKnownHostsFile /dev/null
+        ServerAliveInterval 240
