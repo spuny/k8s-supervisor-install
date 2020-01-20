@@ -16,15 +16,3 @@
                     regexp: '^127\.0\.0\.1[ \t]+localhost'
                     line: '127.0.0.1 localhost {{ inventory_hostname }}'
                     state: present
-
-          - name: Edit kubelet env
-            lineinfile:
-                    path: /etc/kubernetes/kubelet.env
-                    line: --cluster-dns=10.233.0.3 \
-                    insertafter: KUBELET_ARGS=\"
-                    state: present
-           
-          - name: Restart kubelet
-            service:
-                    name: kubelet
-                    state: restarted 
