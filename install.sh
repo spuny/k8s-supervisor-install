@@ -3,15 +3,22 @@ master_node="192.168.210.11"
 
 # create correct dns resolvers
 sudo rm /etc/resolv.conf
-sudo echo -e "nameserver 8.8.8.8\nnameserver 8.8.4.4" > /etc/resolv.conf
-
+sudo chmod 666 /etc/resolv.conf
+cat << 'EOF' > /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+sudo chmod 644 /etc/resolv.conf
 # Install zsh etc
 sudo apt update
-sudo apt install git zsh curl wget python-pip -y
+sudo apt install git zsh curl wget python3-pip -y
+sudo pip3 install --upgrade pip
+mkdir ~/.ssh
+cp ssh_config $HOME/.ssh/config
 
 # clone requested repositories
-ssh $master_node git clone https://github.com/openstack/openstack-helm.git
-ssh $master_node git clone https://github.com/openstack/openstack-helm-infra.git
+ssh $master_node git clone https://github.com/spuny/openstack-helm.git
+ssh $master_node git clone https://github.com/spuny/openstack-helm-infra.git
 
 
 cd ~
@@ -20,7 +27,7 @@ cd $HOME/kubespray
 chown ubuntu.ubuntu $HOME/kubespray -R
 sudo pip install -r requirements.txt
 chown ubuntu.ubuntu $HOME/kubespray -R
-cp -rfp inventory/sample inventory/mycluster
+cp -rfp inventory/sample inventory/k8s-cluster
 
 
 # Install Helm
