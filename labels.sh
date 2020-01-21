@@ -25,7 +25,7 @@ kubectl label nodes k8s-ceph-1 ceph-rgw=enabled
 kubectl label nodes k8s-ceph-2 ceph-rgw=enabled
 kubectl label nodes k8s-ceph-3 ceph-rgw=enabled
 kubectl label nodes k8s-ceph-4 ceph-rgw=enabled
-I
+
 kubectl label nodes k8s-cmp-1 openstack-compute-node=enabled
 kubectl label nodes k8s-cmp-2 openstack-compute-node=enabled
 kubectl label nodes k8s-cmp-1 openvswitch=enabled
