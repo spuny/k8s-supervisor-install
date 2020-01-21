@@ -2,6 +2,7 @@
 
 # This file configs master node
 # Cant upload armada manifestsm they are kept in private repository - do manually
+echo "Cant upload armada manifestsm they are kept in private repository - do manually"
 
 source git_urls.sh
 $master_node="192.168.210.11"

@@ -18,7 +18,7 @@ sudo apt update
 sudo apt install git zsh curl wget python3-pip -y
 sudo pip3 install --upgrade pip
 mkdir ~/.ssh
-cp ssh_config $HOME/.ssh/config
+cp $PWD/ssh_config $HOME/.ssh/config
 
 # clone requested repositories
 ssh $master_node git clone https://github.com/spuny/openstack-helm.git
@@ -31,18 +31,26 @@ git clone $kubespray
 cd $HOME/kubespray
 chown ubuntu.ubuntu $HOME/kubespray -R
 sudo pip install -r requirements.txt
-chown ubuntu.ubuntu $HOME/kubespray -R
 cp -rfp inventory/sample inventory/k8s-cluster
-cp -rfp inventory/sample inventory/"$k8s-cname"
+cp -rfp inventory/sample inventory/"$k8s_cname"
 
-#TODO - check if admin.conf exists
-mv ~/admin.conf ~/.kube/config
+if [ ! -d "$HOME/.kube" ];then
+    exit 1
+fi
 
-# run armada
-echo "Start armada docker container on master node"
-ssh $master_node sudo docker run -d --rm --net host  --name armada -v /etc/:/etc/ -v /home/ubuntu/.kube/:/home/ubuntu/.kube/ -v /home/ubuntu/:/tmp/ quay.io/airshipit/armada:latest
+if [ ! -f "$HOME/admin.conf" ];then
+    exit 1
+else
+    mv ~/admin.conf ~/.kube/config
+fi
 
+sudo ln -v sarmada.sh /usr/bin/sarmada
+sudo ln -v karmada.sh /usr/bin/karmada
+
+
+source install_zsh.sh
 ######################################
+source config_master.sh
 
 
 ## Install Helm
