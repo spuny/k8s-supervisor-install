@@ -1,10 +1,11 @@
 ---
 - hosts: all
   tasks:
-          - name: Add cronjob for route management
+          - name: Remove cronjob for route management
             cron:
                 name: "Check routes"
                 minute: "*/5"
                 user: root
                 job: "/etc/networkd-dispatcher/routable.d/delete.sh"
+                state: absent
 
