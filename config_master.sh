@@ -10,10 +10,10 @@ ssh $master_node git clone $os_helm
 ssh $master_node git clone $os_helm
 scp $PWD/install_kubectl.sh $master_node:
 
-ssh $master_node echo "alias armada=\'sudo docker exec -t armada armada\'" >> ~/.bashrc                                                                        
+ssh $master_node echo "alias armada='sudo docker exec -t armada armada'" >> ~/.bashrc                                                                        
 ssh $master_node mkdir ~/.kube                                                          
 ssh $master_node sudo cp /etc/kubernetes/admin.conf ~/                                  
 ssh $master_node sudo chown ubuntu: ~/admin.conf                                        
-ssh $master_node sudo cp ~/admin.conf ~/.kube/config
+ssh $master_node mv ~/admin.conf ~/.kube/config
 
-scp $master_node:/admin.conf ~/
+scp $master_node:~/.kube/config ~/.kube/
