@@ -9,10 +9,3 @@
                     group: root
                     mode: 0644
                     backup: yes
-
-          - name: Change hosts file
-            lineinfile:
-                    dest: /etc/hosts
-                    regexp: '^127\.0\.0\.1[ \t]+localhost'
-                    line: '127.0.0.1 localhost {{ inventory_hostname }}'
-                    state: present
