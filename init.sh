@@ -1,4 +1,5 @@
 #!/bin/bash
+branch_name="release-2.11"
 
 # create correct dns resolvers
 sudo rm /etc/resolv.conf
@@ -27,7 +28,7 @@ ssh $master_node git clone https://github.com/spuny/openstack-helm-infra.git
 
 # Clone and set kubespray on supervisor
 cd ~
-git clone $kubespray
+git clone --single-branch --branch $branch_name $kubespray
 cd $HOME/kubespray
 chown ubuntu.ubuntu $HOME/kubespray -R
 sudo pip install -r requirements.txt
