@@ -21,9 +21,16 @@ sudo pip3 install --upgrade pip
 mkdir ~/.ssh
 cp $PWD/ssh_config $HOME/.ssh/config
 
-# clone requested repositories
-ssh $master_node git clone https://github.com/spuny/openstack-helm.git
-ssh $master_node git clone https://github.com/spuny/openstack-helm-infra.git
+if [ -f ~/.ssh/id_rsa ];
+then
+    # clone requested repositories
+    ssh $master_node git clone $os_helm
+    ssh $master_node git clone $os_helm_infra
+    ssh $master_node git clone $armada_repo
+else
+    echo "No key for git repository"
+    exit 1
+fi
 
 
 # Clone and set kubespray on supervisor
@@ -52,23 +59,6 @@ sudo ln -v karmada.sh /usr/bin/karmada
 source install_zsh.sh
 ######################################
 source config_master.sh
-
-
-## Install Helm
-cd /tmp
-curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > install-helm.sh
-chmod u+x install-helm.sh
-./install-helm.sh
-# Install Tiller - in version of helm 3 tiller is no longer supported !!!
-# Armada will not work thou
-kubectl -n kube-system create serviceaccount tiller
-kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
-helm init --service-account tiller
-# Verification of runnig tiller pod
-kubectl get pods -n kube-system |grep tiller
-# copy helm to master
-scp /tmp/install-helm.sh $master_node:
-ssh $master_node /tmp/install-helm.sh
 
 echo "Create HOSTS file for ansible"
 echo "Check group_vars!!!!!"

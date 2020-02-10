@@ -1,7 +1,6 @@
 #!/bin/bash
-os_helm="https://github.com/spuny/openstack-helm.git"
-os_helm_infra="https://github.com/spuny/openstack-helm-infra.git"
-kubespray="https://github.com/kubernetes-sigs/kubespray.git"
-
+os_helm="git@github.com:spuny/openstack-helm.git"
+os_helm_infra="git@github.com:spuny/openstack-helm-infra.git"
+kubespray="git@github.com:spuny/kubespray.git"
+armada_repo="git@github.com:spuny/armada-manifests.git"
 # Armada manifests are kept in private repo!!!
-# Download and install it manually
