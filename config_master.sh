@@ -5,9 +5,10 @@
 echo "Cant upload armada manifestsm they are kept in private repository - do manually"
 
 source git_urls.sh
-$master_node="192.168.210.11"
-ssh $master_node git clone $os_helm
-ssh $master_node git clone $os_helm
+master_node="192.168.210.11"
+ssh $master_node "git clone $os_helm"
+ssh $master_node "git clone $os_helm"
+ssh $master_node "git clone --branch developement $armada_rep"
 scp $PWD/install_kubectl.sh $master_node:
 
 ssh $master_node echo "alias armada=\'sudo docker exec -t armada armada\'" >> ~/.bashrc                                                                        
