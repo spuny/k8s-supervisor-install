@@ -7,7 +7,7 @@ echo "Cant upload armada manifestsm they are kept in private repository - do man
 source git_urls.sh
 master_node="192.168.210.11"
 ssh $master_node "git clone $os_helm"
-ssh $master_node "git clone $os_helm"
+ssh $master_node "git clone $os_helm_infra"
 ssh $master_node "git clone --branch developement $armada_rep"
 scp $PWD/install_kubectl.sh $master_node:
 
